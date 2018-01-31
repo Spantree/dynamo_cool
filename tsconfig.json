@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "declaration": true,
-        "lib": ["es2018"],
+        "lib": ["esnext"],
         "module": "commonjs",
-        "target": "es6",
+        "target": "esnext",
         "noImplicitAny": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
