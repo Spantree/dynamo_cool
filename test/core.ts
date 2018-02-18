@@ -50,7 +50,6 @@ describe("Dynamo Cool", () => {
             done();
         }
     });
-    /*
     after("Delete Table", done => {
         const ddClient = new DynamoDB(cfg);
         try {
@@ -61,7 +60,6 @@ describe("Dynamo Cool", () => {
             log(chalk.default.red("Failed to delete table", e));
         }
     });
-    */
 
     describe("Put", () => {
         const db = new DynamoDB.DocumentClient(cfg);
