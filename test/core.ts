@@ -1,14 +1,13 @@
 import * as assert from "assert";
 import { DynamoDB } from "aws-sdk";
 import * as chalk from "chalk";
-import { isEmpty } from "lodash";
+import { isObject, isEmpty } from "lodash";
 import { put, scan } from "../src/core";
 
 const log = console.log;
 
 const cfg = {
     accessKeyId: "cUniqueSessionID",
-    credentialProvider: undefined,
     endpoint: "http://localhost:8000",
     region: "us-west-2",
     sslEnabled: true,
@@ -51,6 +50,7 @@ describe("Dynamo Cool", () => {
             done();
         }
     });
+    /*
     after("Delete Table", done => {
         const ddClient = new DynamoDB(cfg);
         try {
@@ -61,6 +61,7 @@ describe("Dynamo Cool", () => {
             log(chalk.default.red("Failed to delete table", e));
         }
     });
+    */
 
     describe("Put", () => {
         const db = new DynamoDB.DocumentClient(cfg);
@@ -124,6 +125,59 @@ describe("Dynamo Cool", () => {
                     Item: {
                         id: "1091",
                         name: "one thousand and ninety one",
+                    },
+                    TableName
+                };
+                put(new DynamoDB.DocumentClient(), params)
+                    .mapLeft(err => assert.notEqual(err, undefined))
+                    .run();
+                done();
+            }, 300);
+        });
+    });
+    describe("DoTheThing", () => {
+        const db = new DynamoDB.DocumentClient(cfg);
+        before("Add Test Data", done => {
+            const params = {
+                Item: {
+                    id: "2091",
+                    name: "two thousand and ninety one",
+                },
+                TableName
+            };
+            put(db, params).run();
+            done();
+        });
+        it("should return updated items when it updates after a scan", done => {
+            setTimeout( () => {
+                const params = { TableName };
+                scan(db, params)
+                    // modify test data
+                    .chain(scanResult => {
+                        const result = scanResult.Items.pop();
+                        const params = {
+                            Item: {
+                                id: result["id"],
+                                name: result["name"] + " foo"
+                            },
+                            TableName
+                        };
+                        return put(db, params);
+                    })
+                    .map(it => {
+                        log("Found Modified: " + isObject(it.$response.data));
+                        // assert.equal(isEmpty(it.Attributes), false);
+                    })
+                    .run();
+                done();
+            }, 300);
+        });
+        it("should handle exceptions", done => {
+            setTimeout(() => {
+                const params = {
+                    Item: {
+                        id: "2091",
+                        name: "two thousand and ninety one",
                     },
                     TableName
                 };

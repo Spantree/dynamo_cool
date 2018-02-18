@@ -1,6 +1,5 @@
 import { AWSError, DynamoDB, Response } from "aws-sdk";
 import * as taskEither from "fp-ts/lib/TaskEither";
-import * as either from "fp-ts/lib/Either";
 
 export interface DynamoDbError {
     name: string;
