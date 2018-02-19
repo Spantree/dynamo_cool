@@ -162,10 +162,15 @@ describe("Dynamo Cool", () => {
                         };
                         return put(db, params);
                     })
-                    .map(it => {
-                        log("Found Modified: " + isObject(it.$response.data));
-                        // assert.equal(isEmpty(it.Attributes), false);
+                    .chain(putResult => {
+                        return scan(db, params);
                     })
+                    .map(it => {
+                        const item = it.Items.pop();
+                        assert.equal(isEmpty(it.Items), false);
+                        assert.equal(item["name"].includes("foo"), true);
+                    })
+                    .mapLeft(err => assert.equal(err, undefined))
                     .run();
                 done();
             }, 300);
