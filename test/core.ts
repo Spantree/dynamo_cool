@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { DynamoDB } from "aws-sdk";
 import * as chalk from "chalk";
-import { isObject, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import { put, scan } from "../src/core";
 
 const log = console.log;
