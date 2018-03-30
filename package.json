@@ -1,6 +1,6 @@
 {
   "name": "dynamo_cool",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A type-safe wrapper for AWS' Dynamodb",
   "main": "core.ts",
   "scripts": {
