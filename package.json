@@ -2,7 +2,7 @@
   "name": "dynamo_cool",
   "version": "1.0.0",
   "description": "A type-safe wrapper for AWS' Dynamodb",
-  "main": "index.js",
+  "main": "core.ts",
   "scripts": {
     "test": "npm run lint && npm run mocha",
     "clean": "rm -rf lib/*",
